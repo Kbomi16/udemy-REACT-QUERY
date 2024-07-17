@@ -1,15 +1,20 @@
-import { useState } from "react";
-
-import { fetchPosts, deletePost, updatePost } from "./api";
-import { PostDetail } from "./PostDetail";
-const maxPostPage = 10;
+import { useState } from 'react'
+import { useQuery } from '@tanstack/react-query'
+import { fetchPosts, deletePost, updatePost } from './api'
+import { PostDetail } from './PostDetail'
+const maxPostPage = 10
 
 export function Posts() {
-  const [currentPage, setCurrentPage] = useState(0);
-  const [selectedPost, setSelectedPost] = useState(null);
+  const [currentPage, setCurrentPage] = useState(0)
+  const [selectedPost, setSelectedPost] = useState(null)
 
   // replace with useQuery
-  const data = [];
+  const { data, isError, error, isLoading } = useQuery({
+    queryKey: ['posts'],
+    queryFn: fetchPosts,
+  })
+  if (isLoading) return <h3>로딩중...</h3>
+  if (isError) return <h3>에러{error.toString()}</h3>
 
   return (
     <>
@@ -36,5 +41,5 @@ export function Posts() {
       <hr />
       {selectedPost && <PostDetail post={selectedPost} />}
     </>
-  );
+  )
 }
