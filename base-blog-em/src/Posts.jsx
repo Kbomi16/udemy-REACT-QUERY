@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useQuery, useQueryClient } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { fetchPosts, deletePost, updatePost } from './api'
 import { PostDetail } from './PostDetail'
 const maxPostPage = 10
@@ -9,6 +9,10 @@ export function Posts() {
   const [selectedPost, setSelectedPost] = useState(null)
 
   const queryClient = useQueryClient()
+
+  const deleteMutation = useMutation({
+    mutationFn: (postId) => deletePost(postId),
+  })
 
   // prefetching으로 페이지네이션 로딩시간 줄이기
   useEffect(() => {
@@ -28,6 +32,7 @@ export function Posts() {
     staleTime: 2000,
   })
   if (isLoading) return <h3>로딩중...</h3>
+  // if (isFetching) return <h3>데이터 가져오는 중...</h3>
   if (isError) return <h3>에러{error.toString()}</h3>
 
   return (
@@ -63,7 +68,9 @@ export function Posts() {
         </button>
       </div>
       <hr />
-      {selectedPost && <PostDetail post={selectedPost} />}
+      {selectedPost && (
+        <PostDetail post={selectedPost} deleteMutation={deleteMutation} />
+      )}
     </>
   )
 }
