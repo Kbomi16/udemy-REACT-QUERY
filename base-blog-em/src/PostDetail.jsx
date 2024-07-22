@@ -1,4 +1,3 @@
-/* eslint-disable @tanstack/query/exhaustive-deps */
 import { fetchComments } from './api'
 import { useQuery } from '@tanstack/react-query'
 import './PostDetail.css'
@@ -6,7 +5,7 @@ import './PostDetail.css'
 export function PostDetail({ post }) {
   // replace with useQuery
   const { data, isError, error, isLoading } = useQuery({
-    queryKey: ['comments'],
+    queryKey: ['comments', post.id],
     queryFn: () => fetchComments(post.id),
     staleTime: 2000,
   })
