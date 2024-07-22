@@ -14,6 +14,10 @@ export function Posts() {
     mutationFn: (postId) => deletePost(postId),
   })
 
+  const updateMutation = useMutation({
+    mutationFn: (postId) => updatePost(postId),
+  })
+
   // prefetching으로 페이지네이션 로딩시간 줄이기
   useEffect(() => {
     if (currentPage < maxPostPage) {
@@ -45,6 +49,7 @@ export function Posts() {
             onClick={() => {
               // mutation 상태 초기화
               deleteMutation.reset()
+              updateMutation.reset()
               setSelectedPost(post)
             }}
           >
@@ -73,7 +78,11 @@ export function Posts() {
       </div>
       <hr />
       {selectedPost && (
-        <PostDetail post={selectedPost} deleteMutation={deleteMutation} />
+        <PostDetail
+          post={selectedPost}
+          deleteMutation={deleteMutation}
+          updateMutation={updateMutation}
+        />
       )}
     </>
   )
