@@ -15,8 +15,21 @@ export function PostDetail({ post, deleteMutation }) {
   return (
     <>
       <h3 style={{ color: 'blue' }}>{post.title}</h3>
-      <button onClick={() => deleteMutation.mutate(post.id)}>Delete</button>
-      <button>Update title</button>
+      <div>
+        <button onClick={() => deleteMutation.mutate(post.id)}>Delete</button>
+        {deleteMutation.isPending && <p className="loading">게시글 삭제중</p>}
+        {deleteMutation.isError && (
+          <p className="error">
+            게시글 삭제 에러: {deleteMutation.error.toString()}
+          </p>
+        )}
+        {deleteMutation.isSuccess && (
+          <p className="success">게시글 삭제 완료!</p>
+        )}
+      </div>
+      <div>
+        <button>Update title</button>
+      </div>
       <p>{post.body}</p>
       <h4>Comments</h4>
       {data.map((comment) => (

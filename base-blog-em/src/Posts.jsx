@@ -42,7 +42,11 @@ export function Posts() {
           <li
             key={post.id}
             className="post-title"
-            onClick={() => setSelectedPost(post)}
+            onClick={() => {
+              // mutation 상태 초기화
+              deleteMutation.reset()
+              setSelectedPost(post)
+            }}
           >
             {post.title}
           </li>
